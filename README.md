@@ -1,8 +1,30 @@
-# Artemis
+# Artemis Documentation
 
-**Build Android, iOS, desktop, and web apps in Python — with almost none of the boilerplate.**
+**Artemis** is a batteries-included layer on top of [Flet](https://flet.dev) for building Android and desktop apps in Python. Flet gives you the primitives (it's Flutter, wearing a Python trench coat); Artemis gives you the everyday app-shell stuff — theming, navigation, forms, state, dialogs — as a handful of plain functions instead of a hundred lines of boilerplate you'd otherwise rewrite in every new project.
 
-Artemis, provided by Art-Hackers is a batteries-included layer on top of [Flet](https://flet.dev) (Flutter, for Python). Flet gives you the raw building blocks; Artemis gives you the everyday app-shell parts — theming, navigation, forms, state, dialogs, testing — as a small set of plain functions instead of something you assemble by hand in every new project.
+This is the documentation for the version of Artemis in this project (`artemis.__version__` — check yours with `python -c "import artemis; print(artemis.__version__)"`). If you were expecting a specific version number and this doesn't match, that's worth double-checking; documentation drifts out of sync with code the moment either one changes without the other, so treat the *installed package* as the source of truth and this doc as a faithful description of it.
+
+Nothing here is aspirational. Every example on every page has actually been run against the real library — most of them through `artemis.testing.TestApp` (see [Testing](09-testing.md)) — before being written down. Where something is flaky or has a real limitation, that's stated plainly rather than glossed over. If you only remember one thing from this whole doc set, let it be this: **every Artemis widget returns a plain Flet control.** There's no parallel universe of Artemis-only concepts to learn. If you already know Flet, you already know 80% of Artemis. If you don't, everything you learn here transfers directly.
+
+## Reading order
+
+If you're brand new, read these roughly in order — each one assumes the last:
+
+1. **[Getting Started](01-getting-started.md)** — install it, run your first app, understand the shape of an Artemis project.
+2. **[Core Concepts](02-core-concepts.md)** — the mental model: `App`, pages, `State`, and *why* the re-render-on-every-click thing works the way it does. Read this one properly; everything else makes more sense once you have this.
+3. **[Widget Reference](03-widgets.md)** — every widget Artemis ships, what it wraps, every parameter, with runnable examples.
+4. **[Theming & Branding](04-theming-and-branding.md)** — palettes, full manual color control, your app's icon/logo.
+5. **[Navigation](05-navigation.md)** — routes, route params, the back stack, bottom tabs, the side drawer, route guards, page transitions.
+6. **[Forms & Validation](06-forms-and-validation.md)** — `Field`, `Form`, the built-in validators, writing your own.
+7. **[Data & Networking](07-data-and-networking.md)** — `State` vs `PersistentState` vs `AsyncData`, fetching from an API, async event handlers.
+8. **[Dialogs & Feedback](08-dialogs-and-feedback.md)** — toasts, alerts, confirmations, date/time pickers, keyboard shortcuts, clipboard.
+9. **[Testing](09-testing.md)** — `artemis.testing.TestApp`, how to write real tests for your app without opening a window.
+10. **[The `artemis` CLI](10-cli.md)** — scaffolding a new project.
+11. **[Troubleshooting & FAQ](11-troubleshooting-and-faq.md)** — the specific, concrete problems people actually hit, and what fixes them. Start here if something's broken.
+
+If you already know what you're looking for, every page stands reasonably well on its own — jump straight in.
+
+## The five-second pitch
 
 ```python
 import artemis as art
@@ -19,123 +41,28 @@ def home(page):
 app.run()
 ```
 
-Run that and you get a real, native-feeling window (not a webview) with a proper Material 3 color scheme, correct fonts, and modern rounded controls — from eleven lines. Build the same file for Android and it's a real Android app, because underneath, it's Flet and Flutter the whole way down. Artemis doesn't fork Flet or invent a new rendering engine — it removes repetition.
+Run that on desktop and you get a real native-feeling window (not a browser wrapped in a box) with a proper Material 3 color scheme, correct fonts, and rounded modern controls — all from eleven lines. Run the *same file* through `flet build apk` and it's an Android app, because underneath, it's still Flet the entire way down. Artemis doesn't fork Flet, doesn't wrap it in a webview, and doesn't invent a new rendering engine. It's a thin, honest layer that removes repetition.
 
-## Install
+## What Artemis is not
 
-```bash
-pip install artemis-ui
+Worth saying plainly, since it saves confusion later:
+
+- **Not a replacement for Flet.** You will drop into raw `flet` (available as `art.flet`) regularly — for icons, for anything Artemis hasn't wrapped yet, for fine control. That's expected and fine, not a failure of the abstraction.
+- **Not a no-code tool.** You're still writing Python. Artemis just means less of it.
+- **Not trying to hide Flet's rough edges by pretending they don't exist.** Where Flet itself has a real limitation (the `FilePicker` saga is the canonical example — see the [Troubleshooting](11-troubleshooting-and-faq.md) page), Artemis says so directly instead of shipping something that quietly breaks on your machine and not the original developer's.
+
+## Where things live
+
+```
+your_project/
+├── your_app/              (or wherever you keep the artemis/ package)
+│   ├── artemis/            the library itself
+│   └── ...
+├── main.py                 your app's entry point
+├── assets/                 auto-created on first run (branding, etc.)
+├── .artemis_data/           auto-created if you use PersistentState
+├── pyproject.toml
+└── tests/                  if you're using artemis.testing
 ```
 
-```python
-import artemis as art
-```
-
-Want charts, or automatic conversion of a custom logo into a Windows icon? Those are optional extras:
-
-```bash
-pip install "artemis-ui[charts]"    # for art.LineChart / BarChart / PieChart
-pip install "artemis-ui[icons]"     # for converting a custom logo.png into a Windows .ico
-```
-
-## Scaffold a new project
-
-```bash
-pip install artemis-ui
-artemis new "My App"
-cd "My App"
-pip install -e .
-python main.py
-```
-
-`artemis new` sets up a working starter app, and a GitHub Actions workflow that builds your app for Android, iOS, Windows, macOS, Linux, and Web the moment you push — so producing a real install-able app on every platform never requires setting up Flutter, the Android SDK, or Xcode on your own machine. See [Building & CI/CD](docs/12-building-and-ci.md).
-
-## What you get
-
-**Theming.** 31 named color palettes, or full manual control over background/surface/text/accent colors — each one Material 3-correct in both light and dark mode automatically.
-
-```python
-art.App("My App", theme="sunset")
-art.App("My App", background="#0B1220", surface="#161F32", text="#E5E7EB", primary="#818CF8")
-```
-
-**Navigation that behaves like a real app.** A genuine back-stack (not a page swap) with automatic back arrows, working hardware/browser back buttons, route parameters, route guards, a bottom tab bar, and a side drawer.
-
-```python
-@app.page("/user/:id", guard=lambda: logged_in.value, redirect="/login")
-def profile(page, params):
-    return art.Text(f"User #{params['id']}")
-
-app.go("/user/42")
-app.back()
-```
-
-**State that just works, with a persistent and an async variant when you need them.**
-
-```python
-count = art.State(0)
-theme_pref = art.PersistentState("theme", default="indigo")   # survives an app restart
-products = art.AsyncData(lambda: art.fetch_json(url))          # loads once, not on every re-render
-```
-
-**Forms with real validation.**
-
-```python
-email = art.Field("", art.validators.required(), art.validators.email())
-form = art.Form(email=email)
-art.Input(label="Email", field=email)
-art.Button("Submit", on_click=form.submit(handle_submit))
-```
-
-**Dialogs, toasts, pickers, and shortcuts** — `app.alert(...)`, `app.confirm(...)`, `app.toast(..., action="Undo")`, `app.pick_date(...)`, `app.on_key("ctrl+s", ...)`, clipboard access, and more, each a one-line call instead of manual control wiring.
-
-**A wide widget set** — `Text`, `Button` (with an automatic loading spinner), `Input`, `Switch`, `Slider`, `Dropdown`, `Column`/`Row`/`Grid`, `Tabs`, `Card`, `ListTile`, `Avatar`, charts, and more — every one a plain Flet control under the hood, so anything Artemis doesn't wrap is one `import flet` away.
-
-**Automatic branding.** A default app icon on first run, replaced instantly if you drop your own `logo.png` in `assets/` — and a dev-only splash screen for web apps that appears on `localhost` and disappears the moment the same code is actually deployed, with nothing to remember to turn off.
-
-**A testing toolkit.** Test your app's logic — clicks, typed input, navigation, dialogs — without opening a window:
-
-```python
-from artemis.testing import TestApp
-
-t = TestApp(app).build()
-t.click(t.find_button("+"))
-assert t.has_text("1")
-```
-
-## Documentation
-
-The README above is the tour. The full reference — every widget, every parameter, every subsystem, with runnable examples — lives in [this repo](https://github.com/Art-Hackers/Artemis-Docs)
-
-## The mental model, briefly
-
-A page is a plain function that returns a control tree:
-
-```python
-@app.page("/")
-def home(page):
-    return art.Text("hello")
-```
-
-When a button is clicked, Artemis re-runs the current screen's function and redraws it — you don't call `page.update()` yourself. Text inputs are the one exception, so typing doesn't lose focus or cursor position; bind them to a `State` instead.
-
-## Examples
-
-The `examples/` folder has a complete, runnable app for nearly every feature above — a counter, a todo list, a themed dashboard with live charts, a login form, drawer navigation, keyboard shortcuts, and more:
-
-```bash
-python examples/counter.py
-python examples/dashboard.py
-```
-
-## Good to know before you start
-
-- **Screens re-render on every interaction, not just the one that changed.** This keeps the mental model simple (your page function is always a fresh, correct description of the screen) at a small performance cost. Fine for typical app sizes; if you're rendering thousands of rows at once, consider pagination.
-- **There is no file picker.** Flet's underlying `FilePicker` control has a real, unresolved upstream registration bug that made it unreliable across machines and Python versions — rather than ship something that silently works for some people and not others, Artemis doesn't wrap it.
-- **Charts need an extra install** (`pip install artemis-ui[charts]`) — kept optional so it's not forced on projects that don't need it.
-- **Python 3.14 has some rough edges with Flet right now.** Python 3.12 or 3.13 are the most stable targets.
-- **Packaging for Android/iOS/desktop genuinely requires Flutter.** That's how Flet works, not something Artemis can avoid — but it auto-installs itself, and the CI workflow every `artemis new` project ships with means your own machine may never need it at all.
-
-## License
-
-MIT — see [`LICENSE`](LICENSE).
+Next: **[Getting Started →](01-getting-started.md)**

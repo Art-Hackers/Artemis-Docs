@@ -12,7 +12,7 @@ app = art.App("My App", theme="ocean")
 
 ## Named palettes
 
-31 named palettes ship out of the box, grouped roughly by mood:
+56 named palettes ship out of the box, grouped roughly by mood:
 
 | Group | Names |
 |---|---|
@@ -20,6 +20,10 @@ app = art.App("My App", theme="ocean")
 | Green | `forest`, `mint`, `emerald`, `lime`, `olive` |
 | Warm | `sunset`, `rose`, `cherry`, `crimson`, `amber`, `gold`, `orange`, `coral`, `clay`, `sand` |
 | Bold | `grape`, `violet`, `magenta`, `fuchsia`, `plum` |
+| Custom | `silver`, `hackergreen`, `neonpink`, `cyberpunk`, `laser`, `electriclime` |
+| Monochrome | `jetblack`, `charcoal`, `snow`, `pearl` |
+| Vibrant Accents | `electricblue`, `acidgreen`, `hotmagenta`, `tangerine` |
+| Others | `midnightblue`, `matrix`, `vaporwave`, `ultraviolet`, `toxic`, `solaris`, `deepspace`, `supernova`, `arctic`, `amethyst`, `crimsonflare` |
 
 The full mapping (name → hex) lives in `artemis.PALETTES`, a plain dict, if you want to inspect or extend it:
 

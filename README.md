@@ -10,17 +10,17 @@ Nothing here is aspirational. Every example on every page has actually been run 
 
 If you're brand new, read these roughly in order — each one assumes the last:
 
-1. **[Getting Started](01-getting-started.md)** — install it, run your first app, understand the shape of an Artemis project.
-2. **[Core Concepts](02-core-concepts.md)** — the mental model: `App`, pages, `State`, and *why* the re-render-on-every-click thing works the way it does. Read this one properly; everything else makes more sense once you have this.
-3. **[Widget Reference](03-widgets.md)** — every widget Artemis ships, what it wraps, every parameter, with runnable examples.
-4. **[Theming & Branding](04-theming-and-branding.md)** — palettes, full manual color control, your app's icon/logo.
-5. **[Navigation](05-navigation.md)** — routes, route params, the back stack, bottom tabs, the side drawer, route guards, page transitions.
-6. **[Forms & Validation](06-forms-and-validation.md)** — `Field`, `Form`, the built-in validators, writing your own.
-7. **[Data & Networking](07-data-and-networking.md)** — `State` vs `PersistentState` vs `AsyncData`, fetching from an API, async event handlers.
-8. **[Dialogs & Feedback](08-dialogs-and-feedback.md)** — toasts, alerts, confirmations, date/time pickers, keyboard shortcuts, clipboard.
-9. **[Testing](09-testing.md)** — `artemis.testing.TestApp`, how to write real tests for your app without opening a window.
-10. **[The `artemis` CLI](10-cli.md)** — scaffolding a new project.
-11. **[Troubleshooting & FAQ](11-troubleshooting-and-faq.md)** — the specific, concrete problems people actually hit, and what fixes them. Start here if something's broken.
+1. **[Getting Started](project/01-getting-started.md)** — install it, run your first app, understand the shape of an Artemis project.
+2. **[Core Concepts](project/02-core-concepts.md)** — the mental model: `App`, pages, `State`, and *why* the re-render-on-every-click thing works the way it does. Read this one properly; everything else makes more sense once you have this.
+3. **[Widget Reference](project/03-widgets.md)** — every widget Artemis ships, what it wraps, every parameter, with runnable examples.
+4. **[Theming & Branding](project/04-theming-and-branding.md)** — palettes, full manual color control, your app's icon/logo.
+5. **[Navigation](project/05-navigation.md)** — routes, route params, the back stack, bottom tabs, the side drawer, route guards, page transitions.
+6. **[Forms & Validation](project/06-forms-and-validation.md)** — `Field`, `Form`, the built-in validators, writing your own.
+7. **[Data & Networking](project/07-data-and-networking.md)** — `State` vs `PersistentState` vs `AsyncData`, fetching from an API, async event handlers.
+8. **[Dialogs & Feedback](project/08-dialogs-and-feedback.md)** — toasts, alerts, confirmations, date/time pickers, keyboard shortcuts, clipboard.
+9. **[Testing](project/09-testing.md)** — `artemis.testing.TestApp`, how to write real tests for your app without opening a window.
+10. **[The `artemis` CLI](project/10-cli.md)** — scaffolding a new project.
+11. **[Troubleshooting & FAQ](project/11-troubleshooting-and-faq.md)** — the specific, concrete problems people actually hit, and what fixes them. Start here if something's broken.
 
 If you already know what you're looking for, every page stands reasonably well on its own — jump straight in.
 
@@ -65,4 +65,4 @@ your_project/
 └── tests/                  if you're using artemis.testing
 ```
 
-Next: **[Getting Started →](01-getting-started.md)**
+Next: **[Getting Started →](project/01-getting-started.md)**

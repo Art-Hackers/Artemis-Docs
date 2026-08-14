@@ -119,4 +119,4 @@ That said: it's young, maintained by (at the time of writing) essentially one co
 - The main `README.md` has a "Known rough edges" section covering limitations not specific enough to warrant their own entry on this page.
 - Every source file in `artemis/` has a module-level docstring explaining *why* it's built the way it is, not just *what* it does — worth reading directly if you're debugging something unusual.
 - `examples/` has a working, runnable app for nearly every feature described across this documentation — if something isn't behaving the way you expect, compare against the matching example first.
-- At last you can drop the issue in this repo in the [issues-section](https://github.com/Art-Hackers/Artemis-Docs/issues)
+- Lastly, you can open an issue in this repository's [Issues section](https://github.com/Art-Hackers/Artemis-Docs/issues)
